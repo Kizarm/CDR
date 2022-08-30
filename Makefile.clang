@@ -1,0 +1,25 @@
+# Use clang / llvm toolchain
+CC = clang
+CX = clang++
+# linker je vlastně ld.lld
+LD   = clang++
+SIZE = llvm-size
+DUMP = llvm-objdump
+COPY = llvm-objcopy
+DEL  = rm -f
+
+ifeq ($(COM),arm)
+ TRIP = thumbv6-none-eabi
+ #TRIP = thumbv7em-none-eabi
+ CFLAGS+= -Oz -I./common/stm32l0 -I./common/stm32l0/cmsis
+ #CFLAGS+= -Wno-deprecated-volatile
+ CFLAGS+= --target=$(TRIP) $(MCPU)
+ LFLAGS+= --target=$(TRIP) $(MCPU)
+ LFLAGS+= -nostdlib
+ LDLIBS+= -L./common/stm32l0 -T script.ld
+ DFLAGS+= --triple=$(TRIP) $(CCPU)
+else
+ CFLAGS+= -Oz
+ LDLIBS+= -lpthread
+endif
+

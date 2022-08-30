@@ -1,0 +1,24 @@
+# Use gcc / binutils toolchain
+ifeq ($(COM),arm)
+PREFIX = arm-none-eabi-
+endif
+CC = $(PREFIX)gcc
+CX = $(PREFIX)g++
+# linker je ld
+LD   = $(PREFIX)g++
+SIZE = $(PREFIX)size
+DUMP = $(PREFIX)objdump
+COPY = $(PREFIX)objcopy
+DEL  = rm -f
+
+ifeq ($(COM),arm)
+ CFLAGS+= -Os -I./common/stm32l0 -I./common/stm32l0/cmsis
+ CFLAGS+= $(MCPU)
+ LFLAGS+= $(MCPU)
+ LFLAGS+= -nostartfiles -nostdlib
+ LDLIBS+= -lgcc -lc -L./common/stm32l0 -T script.ld
+else
+ CFLAGS+= -Os
+endif
+
+
