@@ -34,19 +34,19 @@
  Dalším požadavkem bylo vybavit touto volbou staré radiostanice Tesla pro svolávání
  dobrovolných hasičů. Na to byl ale už obvod FX003 moc drahý, bylo by asi levnější koupit
  nové rádio. Nápad byl vyhodnocovat volbu přímo procesorem. Pro tehdejší možnosti, tedy
- 8051 a assembler to byl dost náročný úkol, ale dalo se to. DAC byl vlastně jednobitový,
+ 8051 a assembler to byl dost náročný úkol, ale dalo se to. ADC byl vlastně jednobitový,
  vyhodnocoval se průchod signálu nulou, a protože to mělo reagovat jen na určitou,
  pevně danou adresu, problém se hodně zjednodušil tím, že bylo potřebné vyhodnocovat
  současně jen dva tóny - ten současně přijímaný a další, co následuje v adrese.
  Bylo to v době před nástupem internetu, takže nějaký Goertzelův algoritmus jsem tehdy
- neznal, ale šlo to udělat jako komlexní korelaci vstupního signálu a harmonického průběhu
+ neznal, ale šlo to udělat jako komplexní korelaci vstupního signálu a harmonického průběhu
  generovaného z look up tabulky. Když uvážíme že Goertzel je filtr IIR 2. řádu, není to
  o moc výpočetně náročnější. Pokud by někoho zajímalo, jak to vlastně fungovalo, stačí si
  najít na youtube přednášku prof. Cejnara, kde vysvětluje jak funguje princip nejmenší
  akce pomocí dráhového integrálu Richarda Feynmana. Sice se zdá, že to spolu vůbec nesouvisí,
  ale jak se zdá, některé postupy jsou opravdu univerzální. A bylo to na svou primitivnost
  celkem spolehlivé, tak na 90%, stejně bylo počítáno s tím, že rádiová cesta může být
- zarušena, takže rádio muselo na výzvu správě odpovědět, v případě chyby šlo výzvu opakovat.
+ zarušena, takže rádio muselo na výzvu správně odpovědět, v případě chyby šlo výzvu opakovat.
  
  Dnešní možnosti jsou už úplně někde jinde, 32-bitové procesory jsou rychlé, mají ADC i DAC
  přímo na čipu, takže je zde ukázka jak se to dá dělat dnes, při využití všech možností, včetně
@@ -95,7 +95,7 @@
  do nekonečna.
  
  @section desc Popis programu.
- Obrázek vydá za mnoho slov. Základní, dost hrubá struktuta objektů
+ Obrázek vydá za mnoho slov. Základní, dost hrubá struktura objektů
  je asi následující
  @dot
  digraph Goertzel {
@@ -155,10 +155,10 @@
  další objekty).
  -# třída IO_manip je jen obal na BaseLayer, rozdělí metody BaseLayer::Up(), BaseLayer::Down() pro Generator a Decoder.
  -# znak přicházející ze sériového portu je zapsán do fronty FIFO, kde si ho Generator (v přerušení) případně vyzvedne.
- -# Decoder zapíše také znak do fronty FIFO, vyzvedne ho přerušení od vysílače Usart (zjedodušeně, ale nic na tom není).
+ -# Decoder zapíše také znak do fronty FIFO, vyzvedne ho přerušení od vysílače Usart (zjednodušeně, ale nic na tom není).
  
  Objekty (třídy) v C++ lze pospojovat různými způsoby. Zde je nejvíce použita metoda pomocí bázových tříd
- AbstractChain a BaseLayer a jejich virtálních metod. Ale např. Decoder používá ukazatel na IO_manip, je to jednodušší,
+ AbstractChain a BaseLayer a jejich virtuálních metod. Ale např. Decoder používá ukazatel na IO_manip, je to jednodušší,
  lze pak volat potřebné Decoder::IO_manip::Down(). Ono by to šlo i jinak, nejjednodušší by bylo udělat IO_manip jako
  globální instanci a volat přímo jí, ale to není moc hezké. Nebo všechno nacpat do společného kontejneru a volat
  přes tt. kontejner. Možností je dost.
